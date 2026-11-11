@@ -71,15 +71,27 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 
 .toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);padding:6px 12px;font-size:12px;z-index:7;color:var(--muted)}
 
+.sheet-t,.cur{display:none}
+.controls .back{display:none}
+body.solo .controls .back{display:inline-flex}
 @media (max-width:760px){
-  .stamp h1{font-size:16px;padding:10px 12px 2px}
-  .stamp p{display:none}
-  .stamp dd{font-size:11px}
-  .panel{top:auto;left:max(16px,env(safe-area-inset-left,0px));width:auto;height:42%}
-  .list{max-height:38%}
-  .controls{bottom:calc(42% + 22px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 32px)}
-  .compass{bottom:auto;top:calc(120px + env(safe-area-inset-top,0px));left:auto;right:max(16px,env(safe-area-inset-right,0px))}
-  .btn{padding:7px 10px;font-size:12px}
+  .stamp{display:none}
+  .panel{top:auto;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:auto;height:auto;max-height:60%;transition:max-height .2s}
+  .panel header{padding:8px 10px;cursor:pointer}
+  .panel header h2,.panel header #sum{display:none}
+  .cur{display:block;font:500 14px var(--f-display);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sheet-t{display:inline-flex;align-items:center;gap:4px;flex:none;font:600 12px var(--f-body);padding:7px 10px;border:1px solid var(--line);background:var(--chip);color:var(--ink)}
+  .panel.collapsed .list,.panel.collapsed .card{display:none}
+  .panel.collapsed header{border-bottom:0}
+  .list{max-height:34vh}
+  .controls{top:calc(10px + env(safe-area-inset-top,0px));bottom:auto;left:10px;right:10px;max-width:none;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .controls::-webkit-scrollbar{display:none}
+  .btn{padding:8px 11px;font-size:12.5px;white-space:nowrap;flex:none}
+  .btn.gm{display:none}
+  .compass{bottom:auto;top:calc(56px + env(safe-area-inset-top,0px));left:auto;right:10px;width:40px;height:40px}
+  .compass svg{width:34px;height:34px}
+  .tag{font-size:10px;padding:1px 4px}
+  .toast{top:auto;bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 32px);text-align:center}
 }
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
 </style>
@@ -103,15 +115,17 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 </svg></div>
 
 <div class="controls" role="toolbar" aria-label="Камера">
+  <a class="btn back" href="/">← Презентация</a>
+  <button class="btn" id="bFull" hidden>⛶ Во весь экран</button>
   <button class="btn" id="bTour" aria-pressed="true">Облёт</button>
   <button class="btn" id="bTop">Вид сверху</button>
   <button class="btn" id="bRoof" aria-pressed="false">Снять кровлю цеха</button>
   <button class="btn" id="bLabels" aria-pressed="true">Литеры</button>
-  <a class="btn" href="https://maps.app.goo.gl/a4FK4z9joYh5yFU96" target="_blank" rel="noopener">Google Maps ↗</a>
+  <a class="btn gm" href="https://maps.app.goo.gl/a4FK4z9joYh5yFU96" target="_blank" rel="noopener">Google Maps ↗</a>
 </div>
 
-<aside class="panel" aria-label="Литеры по техпаспорту">
-  <header><h2>Литеры по техпаспорту</h2><span class="num" id="sum"></span></header>
+<aside class="panel" id="panel" aria-label="Литеры по техпаспорту">
+  <header id="panelHead"><h2>Литеры по техпаспорту</h2><span class="num" id="sum"></span><span class="cur" id="cur"></span><button class="sheet-t" id="sheetT" aria-expanded="false">Подробнее ▴</button></header>
   <div class="list" id="list"></div>
   <div class="card" id="card"></div>
 </aside>
@@ -425,7 +439,7 @@ ALL.forEach(o=>{const b=document.createElement('button');b.id='li-'+o.id;b.inner
 let current=null;
 const highlight=new THREE.MeshStandardMaterial({color:'#2c56c9',emissive:'#2c56c9',emissiveIntensity:.35,roughness:.6});
 const origMats=new Map();
-function select(id,fly){current=id;const o=ALL.find(x=>x.id===id);
+function select(id,fly){current=id;const o=ALL.find(x=>x.id===id);document.getElementById('cur').textContent=o.lit+' · '+o.name;
   list.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.id==='li-'+id?'true':'false'));
   for(const k in tags)tags[k].classList.toggle('on',k===id);
   card.innerHTML=`<h3>${o.lit} · ${o.name}</h3><p class="sub">${o.sub}</p><table>${o.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>${o.note?`<p class="note">${o.note}</p>`:''}${id==='site'?`<p class="note">Расположение на карте: <a href="https://maps.app.goo.gl/a4FK4z9joYh5yFU96" target="_blank" rel="noopener">открыть в Google Maps</a>. Размещение строений — по ситуационному плану 2009 г., привязка к сторонам света приблизительная.</p>`:''}`;
@@ -463,6 +477,28 @@ bRoof.addEventListener('click',()=>{const on=bRoof.getAttribute('aria-pressed')!
   h.walls.material.forEach((m,i)=>{if(i===2){m.visible=!on;}});
   bRoof.textContent=on?'Вернуть кровлю':'Снять кровлю цеха';
   if(on){select('V',true);}});
+/* шторка на телефоне */
+const panel=document.getElementById('panel'),sheetT=document.getElementById('sheetT');
+const mq=matchMedia('(max-width:760px)');
+function setSheet(open){panel.classList.toggle('collapsed',!open);sheetT.setAttribute('aria-expanded',String(open));sheetT.textContent=open?'Свернуть ▾':'Подробнее ▴';}
+if(mq.matches)setSheet(false);
+document.getElementById('panelHead').addEventListener('click',()=>{if(mq.matches)setSheet(panel.classList.contains('collapsed'));});
+/* во весь экран */
+const embedded=window.top!==window;if(!embedded)document.body.classList.add('solo');
+const bFull=document.getElementById('bFull');
+let pdoc=document;try{if(embedded)pdoc=window.parent.document;}catch(e){pdoc=null;}
+const fsEl=()=>{try{return embedded?window.frameElement:document.documentElement;}catch(e){return null;}};
+const canFS=!!(pdoc&&fsEl()&&(fsEl().requestFullscreen||fsEl().webkitRequestFullscreen));
+const fsDoc=()=>pdoc||document;
+const isFS=()=>!!(fsDoc().fullscreenElement||fsDoc().webkitFullscreenElement);
+if(embedded||canFS)bFull.hidden=false;
+function syncFS(){bFull.textContent=isFS()?'✕ Выйти из полноэкранного':'⛶ Во весь экран';setTimeout(resize,100);}
+bFull.addEventListener('click',()=>{
+  if(isFS()){const d=fsDoc();(d.exitFullscreen||d.webkitExitFullscreen).call(d);return;}
+  if(canFS){const el=fsEl();const r=(el.requestFullscreen||el.webkitRequestFullscreen).call(el);if(r&&r.catch)r.catch(()=>{if(embedded)window.top.location.href='/model';});}
+  else if(embedded)window.top.location.href='/model';
+});
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>fsDoc().addEventListener(ev,syncFS));
 const bLabels=document.getElementById('bLabels');
 bLabels.addEventListener('click',()=>{showLabels=!showLabels;bLabels.setAttribute('aria-pressed',String(showLabels));});
 
