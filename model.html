@@ -73,6 +73,9 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 
 .sheet-t,.cur{display:none}
 .controls .back{display:none}
+body.clean .panel,body.clean .labels,body.clean .compass,body.clean .stamp,body.clean .toast,body.clean .controls .btn:not(#bClean){display:none!important}
+body.clean .controls{left:auto;right:max(12px,env(safe-area-inset-right,0px));top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));opacity:.75}
+body.clean .controls:hover{opacity:1}
 body.solo .controls .back{display:inline-flex}
 @media (max-width:760px){
   .stamp{display:none}
@@ -116,6 +119,7 @@ body.solo .controls .back{display:inline-flex}
 
 <div class="controls" role="toolbar" aria-label="Камера">
   <a class="btn back" href="/">← Презентация</a>
+  <button class="btn" id="bClean" aria-pressed="false">Только 3D</button>
   <button class="btn" id="bFull" hidden>⛶ Во весь экран</button>
   <button class="btn" id="bTour" aria-pressed="true">Облёт</button>
   <button class="btn" id="bTop">Вид сверху</button>
@@ -499,6 +503,12 @@ bFull.addEventListener('click',()=>{
   else if(embedded)window.top.location.href='/model';
 });
 ['fullscreenchange','webkitfullscreenchange'].forEach(ev=>fsDoc().addEventListener(ev,syncFS));
+/* режим «только 3D»: убрать все данные, оставить анимацию */
+const bClean=document.getElementById('bClean');
+function setClean(on){document.body.classList.toggle('clean',on);bClean.setAttribute('aria-pressed',String(on));bClean.textContent=on?'Показать данные':'Только 3D';
+  if(on&&!touring){touring=true;fly=null;bTour.setAttribute('aria-pressed','true');}}
+bClean.addEventListener('click',()=>setClean(!document.body.classList.contains('clean')));
+if(new URLSearchParams(location.search).has('clean'))setClean(true);
 const bLabels=document.getElementById('bLabels');
 bLabels.addEventListener('click',()=>{showLabels=!showLabels;bLabels.setAttribute('aria-pressed',String(showLabels));});
 
