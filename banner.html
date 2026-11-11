@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Баннер · Промзона 15А</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@600;700&display=swap">
+<style>
+/* Баннер для соцсетей и рекламы. Размер задаётся параметрами: banner.html?w=1200&h=630 */
+html,body{margin:0;background:#0e1113}
+.b{position:relative;overflow:hidden;color:#fff;font-family:"IBM Plex Sans",sans-serif;background:#1a1f23 url(assets/render-hero.jpg) 70% center/cover no-repeat}
+.b::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,24,27,.97) 0%,rgba(20,24,27,.88) 38%,rgba(20,24,27,.25) 70%,rgba(20,24,27,.1) 100%)}
+.in{position:absolute;inset:0;padding:calc(var(--u)*5.2);display:flex;flex-direction:column;justify-content:space-between}
+.top{display:flex;gap:calc(var(--u)*1.2);align-items:center;font:500 calc(var(--u)*1.35) "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#ffd49a}
+.top i{width:calc(var(--u)*1.1);height:calc(var(--u)*1.1);background:#e8a23a}
+h1{font:700 calc(var(--u)*5.4)/1.06 "Unbounded",sans-serif;letter-spacing:-.02em;margin:0;max-width:13ch}
+.sub{font-size:calc(var(--u)*2);color:#c9d0d5;margin:calc(var(--u)*1.6) 0 0;max-width:30ch;line-height:1.35}
+.row{display:flex;align-items:flex-end;justify-content:space-between;gap:calc(var(--u)*3)}
+.price{font:700 calc(var(--u)*6)/1 "Unbounded",sans-serif;color:#e8a23a;letter-spacing:-.02em}
+.price small{display:block;font:500 calc(var(--u)*1.45) "IBM Plex Mono",monospace;color:#c9d0d5;letter-spacing:.08em;text-transform:uppercase;margin-bottom:calc(var(--u)*.8)}
+.chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*.8);justify-content:flex-end;max-width:52%}
+.chips span{font:600 calc(var(--u)*1.55) "IBM Plex Sans",sans-serif;padding:calc(var(--u)*.75) calc(var(--u)*1.2);background:rgba(20,24,27,.78);border:1px solid rgba(255,255,255,.22);white-space:nowrap}
+.chips b{color:#e8a23a;font-family:"IBM Plex Mono",monospace}
+.tall .row{flex-direction:column;align-items:flex-start}.tall .chips{justify-content:flex-start;max-width:none}
+.tall::before{background:linear-gradient(180deg,rgba(20,24,27,.96) 0%,rgba(20,24,27,.7) 45%,rgba(20,24,27,.35) 65%,rgba(20,24,27,.95) 100%)}
+.tall h1{font-size:calc(var(--u)*6.4)}
+</style></head><body>
+<div class="b" id="b"><div class="in">
+  <div>
+    <div class="top"><i></i>Продажа · Актобе</div>
+    <h1 style="margin-top:calc(var(--u)*2.2)">Производственная база 2,95 га</h1>
+    <p class="sub">Цех 9 044 м², склады, офисный корпус и собственный ж/д тупик</p>
+  </div>
+  <div class="row">
+    <div class="price"><small>Цена</small>1,5 млрд ₸</div>
+    <div class="chips"><span><b>12 129</b> м² зданий</span><span><b>110</b> м ж/д пути</span><span>цех <b>H 10</b> м</span><span>пролёты <b>24,7</b> м</span></div>
+  </div>
+</div></div>
+<script>
+const q=new URLSearchParams(location.search),w=+q.get('w')||1200,h=+q.get('h')||630,b=document.getElementById('b');
+b.style.width=w+'px';b.style.height=h+'px';b.style.setProperty('--u',(Math.min(w,h*1.9)/100)+'px');
+if(h>w)b.classList.add('tall');
+</script>
+</body></html>

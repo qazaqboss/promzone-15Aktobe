@@ -1,0 +1,496 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Промзона 15А, Актобе</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: full-bleed 3D scene; техпаспорт-style stamp top-left; литеры panel right (bottom sheet on phones); camera controls bottom. */
+:root{
+  --bg:#dfe3e6; --panel:rgba(247,248,246,.92); --ink:#1d2328; --muted:#5d6870; --line:#c5ccd1;
+  --accent:#2c56c9; --accent-ink:#fff; --chip:#e9edf0; --warn:#b5651d;
+  --f-display:"Unbounded",system-ui,sans-serif; --f-body:"IBM Plex Sans",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151a1e; --panel:rgba(26,32,37,.92); --ink:#e7ebee; --muted:#9aa6ae; --line:#36414a;
+  --accent:#7d9cff; --accent-ink:#0f1630; --chip:#222a30; --warn:#e3a061; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151a1e; --panel:rgba(26,32,37,.92); --ink:#e7ebee; --muted:#9aa6ae; --line:#36414a;
+  --accent:#7d9cff; --accent-ink:#0f1630; --chip:#222a30; --warn:#e3a061; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);overflow:hidden}
+#stage{position:fixed;inset:0}
+#stage canvas{display:block;width:100%;height:100%;touch-action:none}
+
+.stamp{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:max(16px,env(safe-area-inset-left,0px));
+  background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(8px);max-width:min(440px,calc(100vw - 32px));z-index:5}
+.stamp h1{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:-.01em;margin:0;padding:12px 14px 4px;text-wrap:balance}
+.stamp p{margin:0;padding:0 14px 10px;color:var(--muted);font-size:13px;line-height:1.4}
+.stamp dl{display:grid;grid-template-columns:repeat(3,auto);margin:0;border-top:1px solid var(--line)}
+.stamp dl div{padding:6px 10px 8px 14px;border-right:1px solid var(--line);min-width:0}
+.stamp dl div:last-child{border-right:0}
+.stamp dt{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.stamp dd{margin:2px 0 0;font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.panel{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  width:340px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(8px);display:flex;flex-direction:column;z-index:5}
+.panel header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.panel header h2{margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.list{overflow:auto;flex:0 1 auto;max-height:42%;border-bottom:1px solid var(--line)}
+.list button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:baseline;width:100%;padding:7px 12px;cursor:pointer;border-bottom:1px solid color-mix(in srgb,var(--line) 50%,transparent)}
+.list button:hover{background:var(--chip)}
+.list button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.list button[aria-current="true"]{background:var(--accent);color:var(--accent-ink)}
+.list button[aria-current="true"] .num{color:inherit}
+.lit{font-family:var(--f-mono);font-weight:500}
+.num{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card{overflow:auto;padding:12px;flex:1 1 auto;min-height:0}
+.card h3{font-family:var(--f-display);font-weight:500;font-size:17px;margin:0 0 2px;text-wrap:balance}
+.card .sub{color:var(--muted);font-size:13px;margin:0 0 10px}
+.card table{width:100%;border-collapse:collapse;font-size:13px}
+.card td{padding:5px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.card td:first-child{color:var(--muted);padding-right:10px;width:46%}
+.card td:last-child{font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.card .note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.45}
+.card a{color:var(--accent)}
+
+.controls{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-wrap:wrap;gap:6px;z-index:6;max-width:calc(100vw - 390px)}
+.btn{font:500 13px var(--f-body);padding:8px 12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;backdrop-filter:blur(8px)}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+
+.compass{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(64px + env(safe-area-inset-bottom,0px));width:54px;height:54px;border-radius:50%;background:var(--panel);border:1px solid var(--line);z-index:5;display:grid;place-items:center}
+.compass svg{width:46px;height:46px;transition:none}
+
+.labels{position:fixed;inset:0;pointer-events:none;z-index:3}
+.tag{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;cursor:pointer;font:500 11px var(--f-mono);background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:2px 6px;white-space:nowrap}
+.tag::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:10px;background:var(--ink);opacity:.6}
+.tag.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tag[hidden]{display:none}
+
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--panel);border:1px solid var(--line);padding:6px 12px;font-size:12px;z-index:7;color:var(--muted)}
+
+@media (max-width:760px){
+  .stamp h1{font-size:16px;padding:10px 12px 2px}
+  .stamp p{display:none}
+  .stamp dd{font-size:11px}
+  .panel{top:auto;left:max(16px,env(safe-area-inset-left,0px));width:auto;height:42%}
+  .list{max-height:38%}
+  .controls{bottom:calc(42% + 22px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 32px)}
+  .compass{bottom:auto;top:calc(120px + env(safe-area-inset-top,0px));left:auto;right:max(16px,env(safe-area-inset-right,0px))}
+  .btn{padding:7px 10px;font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+
+<div id="stage" aria-label="3D-модель производственной базы"></div>
+<div class="labels" id="labels"></div>
+
+<div class="stamp">
+  <h1>Производственная база · Промзона 15А</h1>
+  <p>Актобе, р-н Астана, кв-л Северо-Западная промзона. Модель собрана по техпаспортам РГКП «Центр по недвижимости» (по сост. на 23.07.2009) и ситуационному плану М 1:1000.</p>
+  <dl>
+    <div><dt>Участок</dt><dd>2,949 га</dd></div>
+    <div><dt>Кад. №</dt><dd>02:036:139:050</dd></div>
+    <div><dt>Инв. №</dt><dd>59215</dd></div>
+  </dl>
+</div>
+
+<div class="compass" title="Север"><svg viewBox="-24 -24 48 48" id="needle" aria-hidden="true">
+  <polygon points="0,-19 5,0 -5,0" fill="var(--accent)"/><polygon points="0,19 5,0 -5,0" fill="var(--muted)"/>
+  <text x="0" y="-8" text-anchor="middle" font-size="7" fill="var(--accent-ink)" font-family="IBM Plex Mono,monospace" dy="-1">С</text>
+</svg></div>
+
+<div class="controls" role="toolbar" aria-label="Камера">
+  <button class="btn" id="bTour" aria-pressed="true">Облёт</button>
+  <button class="btn" id="bTop">Вид сверху</button>
+  <button class="btn" id="bRoof" aria-pressed="false">Снять кровлю цеха</button>
+  <button class="btn" id="bLabels" aria-pressed="true">Литеры</button>
+  <a class="btn" href="https://maps.app.goo.gl/a4FK4z9joYh5yFU96" target="_blank" rel="noopener">Google Maps ↗</a>
+</div>
+
+<aside class="panel" aria-label="Литеры по техпаспорту">
+  <header><h2>Литеры по техпаспорту</h2><span class="num" id="sum"></span></header>
+  <div class="list" id="list"></div>
+  <div class="card" id="card"></div>
+</aside>
+
+<div class="toast" id="toast">Загрузка модели…</div>
+
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/vendor/OrbitControls.js"></script>
+<script>
+(function(){
+const toast=document.getElementById('toast');
+if(!window.THREE){toast.textContent='Не удалось загрузить Three.js — обновите страницу.';return;}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- данные по техпаспорту ---------- */
+const SITE={
+  id:'site', lit:'ЗУ', name:'Земельный участок', sub:'Производственная база с земельным участком',
+  rows:[['Площадь участка','29 490 м² (2,949 га)'],['Застроено','10 389,3 м²'],['Не застроено','19 100,7 м²'],
+    ['Кадастровый №','02:036:139:050'],['Адрес','Сев.-Зап. промзона, д. 15 / уч. 15А'],
+    ['Координаты','50.31577, 57.10563'],['Ж/д путь','110 м'],
+    ['Аукцион','№ 417207 от 10.10.2025'],['Цена продажи','203 763 925 ₸'],['Оценка (24.07.2024)','301 871 000 ₸'],
+    ['Правообладатель','ТОО «АГНКС Казахстан», с 31.10.2025']],
+  note:'Состав по протоколу торгов: цех, гараж, пристройки, склад и административный корпус.'
+};
+const B=[
+ {id:'V',lit:'В',name:'Производственный цех',sub:'1977 · 1 этаж · два пролёта',
+  rows:[['Размеры','159,4 × 49,4 м'],['Высота','10,0 м'],['Площадь застройки','7 874 м²'],['Объём','78 743 м³'],['Общая площадь (литер В)','9 044,1 м²'],['Стены','ж/б плиты'],['Фундамент','ж/б блоки'],['Кровля','мягкая совмещённая'],['Полы','бетон, кафель'],['Износ','30 %']],
+  note:'Помещения: цеха 556, 828,3, 512,6, 948,4 м² и др., склад, кабинеты, санузлы.'},
+ {id:'V1',lit:'В1',name:'Склад',sub:'сэндвич-панели, металлические фермы',
+  rows:[['Размеры','36,5 × 20,3 м'],['Высота','5,5 м'],['Площадь','741 м²'],['Объём','4 075 м³'],['Кровля','профлист'],['Ворота','металлические'],['Состояние','хорошее']]},
+ {id:'V2',lit:'В2',name:'Пристройка с башней',sub:'2007 · утеплённый сэндвич',
+  rows:[['Основание','10,6 × 11,7 м, H 3,45'],['Башня','11,8 × 6,7 м, H 17,95'],['Площадь','124 м²'],['Объём','1 848 м³'],['Каркас','металлические фермы'],['Кровля','профлист']],
+  note:'На ситуационном плане отметка H = 21,4 м.'},
+ {id:'V4',lit:'В4',name:'Пристройка с башней',sub:'утеплённый сэндвич',
+  rows:[['Основание','10,6 × 10,3 м, H 3,45'],['Башня','10,2 × 6,7 м, H 17,95'],['Площадь','109,2 м²'],['Объём','1 604 м³'],['Ворота','металлические']]},
+ {id:'V3',lit:'В3',name:'Пристройка',sub:'1977 · силикатный кирпич',
+  rows:[['Размеры','5,0 × 3,3 м'],['Высота','2,8 м'],['Площадь','16,5 м²'],['Кровля','шифер'],['Износ','30–40 %']]},
+ {id:'v',lit:'в1–в3',name:'Холодные пристройки',sub:'вдоль северной стены цеха',
+  rows:[['в1','9,6 × 6,3 м, H 4,0 · 60,5 м²'],['в2','6,4 × 9,6 м, H 3,0 · 61,4 м²'],['в3','9,6 × 15,9 м, H 4,8 · 152,6 м²'],['Кровля','рубероид, профлист']]},
+ {id:'A',lit:'А',name:'Административный корпус',sub:'1977 · 3 этажа · силикатный кирпич',
+  rows:[['Размеры','37,9 × 12,85 м'],['Высота','10,8 м'],['Площадь застройки','537,7 м²'],['Общая площадь','1 208,7 м²'],['Объём','5 411 м³'],['1 / 2 / 3 этаж','414,1 / 405,5 / 389,1 м²'],['Отопление','индивидуальное, газ'],['Износ','30 %']],
+  note:'1 этаж — лаборатории, мастерские, котельная; 2 этаж — столовая с кухней, кабинеты; 3 этаж — кабинеты.'},
+ {id:'A1',lit:'А1',name:'Пристройка',sub:'1996 · силикатный кирпич',rows:[['Размеры','6,45 × 4,5 м'],['Высота','3,0 м'],['Площадь','29 м²'],['Кровля','м/совмещённая']]},
+ {id:'A2',lit:'А2',name:'Пристройка',sub:'1999 · силикатный кирпич',rows:[['Размеры','3,5 × 6,2 м'],['Высота','3,0 м'],['Площадь','21,7 м²'],['Кровля','металлическая']]},
+ {id:'Bg',lit:'Б',name:'Гараж и склад',sub:'1977 · 1 этаж · бетонные блоки',
+  rows:[['Площадь застройки','544 м²'],['Общая площадь','495,6 м²'],['В т.ч. гараж','207,6 м²'],['В т.ч. склад','288 м²'],['Высота','6,0 м'],['Объём','3 264 м³']]},
+ {id:'G',lit:'Г1–Г2',name:'Насосная и навес',sub:'вспомогательные сооружения',rows:[['Г1 насосная','13,6 м², кирпич'],['Г2 навес','51,4 м², металл']]},
+ {id:'rail',lit:'Ж/д',name:'Железнодорожный тупик',sub:'техпаспорт на ж/д пути, инв. 59215',rows:[['Протяжённость','110 м']]}
+];
+
+/* ---------- three.js сцена ---------- */
+const stage=document.getElementById('stage');
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=.82;
+stage.appendChild(renderer.domElement);
+
+const scene=new THREE.Scene();
+const SKY=new THREE.Color('#bcd0de');
+scene.background=SKY; scene.fog=new THREE.Fog(SKY,420,1100);
+const camera=new THREE.PerspectiveCamera(42,1,1,3000);
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=.08; controls.maxPolarAngle=Math.PI*0.47; controls.minDistance=25; controls.maxDistance=700;
+
+scene.add(new THREE.HemisphereLight('#dfeaf3','#8a7a5c',0.75));
+const sun=new THREE.DirectionalLight('#fff1d6',1.75);
+sun.position.set(-160,220,120); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-220,right:220,top:220,bottom:-220,near:10,far:700});
+sun.shadow.bias=-0.0004; sun.shadow.normalBias=0.4;
+scene.add(sun);
+
+/* ---------- процедурные текстуры ---------- */
+function canvasTex(w,h,draw,rx=1,ry=1){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t;}
+function noise(g,w,h,base,amp,n=6000){g.fillStyle=base;g.fillRect(0,0,w,h);for(let i=0;i<n;i++){const v=(Math.random()-.5)*amp;g.fillStyle=v>0?`rgba(255,255,255,${v})`:`rgba(0,0,0,${-v})`;g.fillRect(Math.random()*w,Math.random()*h,2,2);}}
+// стена цеха: 24 м × 10 м, ж/б панели 6 м, ленточное остекление
+const hallWallDraw=(g,w,h)=>{noise(g,w,h,'#e6e4de',.12,4000);
+  const py=h/10; // 1 м
+  g.fillStyle='#d8d6cf';g.fillRect(0,0,w,py*1.2);
+  for(let k=0;k<4;k++){const x=k*w/4;g.fillStyle='#bdbab2';g.fillRect(x,0,2,h);}
+  for(const y of [1.2,4.2,7.2]){g.fillStyle='rgba(0,0,0,.18)';g.fillRect(0,h-y*py,w,2);}
+  // окна 4.6–6.6 м
+  g.fillStyle='#3b4650';g.fillRect(0,h-6.6*py,w,2*py);
+  for(let x=0;x<w;x+=w/24){g.fillStyle='#d9d6ce';g.fillRect(x,h-6.6*py,3,2*py);}
+  g.fillStyle='rgba(160,190,210,.25)';g.fillRect(0,h-6.6*py,w,py*.6);
+  // подтёки
+  for(let i=0;i<30;i++){g.fillStyle='rgba(90,80,60,.07)';g.fillRect(Math.random()*w,h-4.5*py,3+Math.random()*6,py*(1+Math.random()*3));}
+};
+const roofDraw=(g,w,h)=>{noise(g,w,h,'#5b5f63',.18,9000);for(let y=0;y<h;y+=h/16){g.fillStyle='rgba(255,255,255,.06)';g.fillRect(0,y,w,2);}
+  for(let i=0;i<14;i++){g.fillStyle='rgba(30,30,30,.18)';g.beginPath();g.ellipse(Math.random()*w,Math.random()*h,20+Math.random()*50,8+Math.random()*20,0,0,7);g.fill();}};
+// силикатный кирпич, 6 м × 10,8 м (3 этажа, 2 окна на этаж)
+const brickDraw=(g,w,h)=>{noise(g,w,h,'#d8ccb0',.1,5000);
+  const ry=h/10.8;
+  for(let y=0;y<h;y+=4){g.fillStyle='rgba(120,100,70,.10)';g.fillRect(0,y,w,1);}
+  for(const b of [1.5,4.9,8.3]){g.fillStyle='rgba(150,130,95,.35)';g.fillRect(0,h-b*ry,w,ry*.35);}
+  for(let f=0;f<3;f++){for(let k=0;k<2;k++){const x=w*(0.18+k*0.5),y=h-(f*3.4+2.9)*ry;
+    g.fillStyle='#efece4';g.fillRect(x-4,y-4,w*0.22+8,1.6*ry+8);
+    g.fillStyle=Math.random()<.25?'#4d4a44':'#5c6d7a';g.fillRect(x,y,w*0.22,1.6*ry);
+    g.fillStyle='#e9e6dd';g.fillRect(x+w*0.11-1,y,3,1.6*ry);g.fillRect(x,y+0.5*ry,w*0.22,3);}}};
+const sandwichDraw=(g,w,h)=>{g.fillStyle='#f1f3f4';g.fillRect(0,0,w,h);for(let y=0;y<h;y+=h/12){g.fillStyle='rgba(0,0,0,.07)';g.fillRect(0,y,w,2);}noise(g,w,h,'rgba(0,0,0,0)',.05,1500);};
+const blockDraw=(g,w,h)=>{noise(g,w,h,'#c9c7c0',.14,4000);for(let y=0;y<h;y+=h/10)for(let x=(y/(h/10))%2?w/8:0;x<w;x+=w/4){g.fillStyle='rgba(0,0,0,.12)';g.fillRect(x,y,w/4,1);g.fillRect(x,y,1,h/10);}};
+const groundDraw=(g,w,h)=>{noise(g,w,h,'#8f8663',.22,30000);for(let i=0;i<260;i++){g.fillStyle=`rgba(${110+Math.random()*40},${115+Math.random()*30},70,.18)`;g.beginPath();g.ellipse(Math.random()*w,Math.random()*h,6+Math.random()*30,4+Math.random()*16,Math.random()*3,0,7);g.fill();}};
+const concreteDraw=(g,w,h)=>{noise(g,w,h,'#b9b6ad',.18,14000);for(let i=0;i<40;i++){g.strokeStyle='rgba(60,60,60,.18)';g.beginPath();let x=Math.random()*w,y=Math.random()*h;g.moveTo(x,y);for(let k=0;k<5;k++){x+=(Math.random()-.5)*60;y+=(Math.random()-.5)*60;g.lineTo(x,y);}g.stroke();}};
+
+const T={hallWall:()=>canvasTex(1024,420,hallWallDraw),roof:canvasTex(512,512,roofDraw),
+  brick:()=>canvasTex(512,920,brickDraw),sandwich:()=>canvasTex(256,256,sandwichDraw),
+  block:()=>canvasTex(512,256,blockDraw),ground:canvasTex(1024,1024,groundDraw,14,14),concrete:canvasTex(1024,1024,concreteDraw,6,6)};
+
+const M=(o)=>new THREE.MeshStandardMaterial(Object.assign({roughness:.9,metalness:0},o));
+const matRoof=M({map:T.roof,color:'#ffffff'});
+const matWhite=M({color:'#eef0ef',roughness:.8});
+const matSilver=M({color:'#c8cdd1',roughness:.55,metalness:.25});
+const matDark=M({color:'#2b3035'});
+const matFlat=M({color:'#8b8f92'});
+
+/* ---------- корневая группа: локальные оси по плану (X вдоль цеха, Z поперёк) ---------- */
+const site=new THREE.Group();
+site.rotation.y=THREE.MathUtils.degToRad(215); // ось цеха ≈ СВ–ЮЗ по спутнику
+scene.add(site);
+const OX=90,OZ=30; // центр участка в координатах плана
+const P=(x,z)=>[x-OX,z-OZ];
+const pickables=[]; const anchors={};
+
+function faceMats(texFn,w,h,d,unitW,roofMat){ // box faces: +x,-x,+y,-y,+z,-z
+  const side=(len)=>{const t=texFn();t.repeat.set(len/unitW,1);return M({map:t});};
+  return [side(d),side(d),roofMat||matFlat,matFlat,side(w),side(w)];
+}
+function box(id,x0,z0,w,d,h,mats,y0=0){
+  const g=new THREE.BoxGeometry(w,h,d);const m=new THREE.Mesh(g,mats);
+  const [x,z]=P(x0+w/2,z0+d/2);m.position.set(x,y0+h/2,z);m.castShadow=m.receiveShadow=true;
+  if(id){m.userData.id=id;pickables.push(m);}site.add(m);return m;
+}
+function anchor(id,x,z,y){const [a,b]=P(x,z);anchors[id]=new THREE.Vector3(a,y,b);}
+
+/* земля */
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(2400,2400),M({map:T.ground}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+/* участок (контур по ситуационному плану, приблизительно) */
+const plot=[[-58,80],[-58,27],[-18,-20],[-6,-13],[166,-13],[166,-24],[212,-24],[231,-6],[239,10],[179,72],[100,82],[-58,82]];
+{const s=new THREE.Shape();plot.forEach(([x,z],i)=>{const [a,b]=P(x,z);i?s.lineTo(a,-b):s.moveTo(a,-b);});
+ const t=T.concrete.clone();t.needsUpdate=true;t.repeat.set(.02,.02);
+ const m=new THREE.Mesh(new THREE.ShapeGeometry(s),M({map:t,color:'#d6d2c6'}));m.rotation.x=-Math.PI/2;m.position.y=.05;m.receiveShadow=true;
+ m.userData.id='site';pickables.push(m);site.add(m);
+ // забор из ж/б плит
+ const fenceMat=M({map:T.block(),color:'#e4e2dc'});
+ for(let i=0;i<plot.length-1;i++){const [x1,z1]=plot[i],[x2,z2]=plot[i+1];
+   if(i===plot.length-2) continue;
+   const len=Math.hypot(x2-x1,z2-z1);const f=new THREE.Mesh(new THREE.BoxGeometry(len,2.4,.25),fenceMat);
+   const [a,b]=P((x1+x2)/2,(z1+z2)/2);f.position.set(a,1.2,b);f.rotation.y=-Math.atan2(z2-z1,x2-x1);f.castShadow=true;site.add(f);}
+}
+anchor('site',40,-14,3);
+
+/* проезды */
+function slab(x0,z0,w,d,c='#9e9b93'){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),M({color:c,roughness:1}));m.rotation.x=-Math.PI/2;const [a,b]=P(x0+w/2,z0+d/2);m.position.set(a,.09,b);m.receiveShadow=true;site.add(m);}
+slab(-30,-10,190,8);slab(-40,52,160,10);slab(160,-10,8,80);slab(186,34,40,9);slab(-48,-12,10,90);
+
+/* ===== Литер В: цех, два пролёта по 24,7 м ===== */
+const L=159.4,W=49.4,HW=8.2,SPAN=W/2,RISE=1.8;
+{const mats=faceMats(T.hallWall,L,HW,W,24,M({color:'#8b8f92'}));
+ // перекрашиваем торцы: текстура той же системы
+ box('V',0,0,L,W,HW,mats);
+ const roofGroup=new THREE.Group();roofGroup.name='hallRoof';
+ for(let s=0;s<2;s++){
+   const sh=new THREE.Shape();sh.moveTo(-SPAN/2,0);sh.lineTo(SPAN/2,0);sh.lineTo(SPAN/2,.35);
+   sh.quadraticCurveTo(0,.35+RISE*2,-SPAN/2,.35);sh.lineTo(-SPAN/2,0);
+   const geo=new THREE.ExtrudeGeometry(sh,{depth:L,bevelEnabled:false,curveSegments:24});
+   const t=T.roof.clone();t.needsUpdate=true;t.repeat.set(.05,.05);
+   const m=new THREE.Mesh(geo,[M({map:t}),M({map:t})]);m.rotation.y=Math.PI/2;
+   const [x,z]=P(0,SPAN/2+s*SPAN);m.position.set(x,HW,z);m.castShadow=m.receiveShadow=true;m.userData.id='V';pickables.push(m);roofGroup.add(m);
+   // вентиляционные дефлекторы
+   const vg=new THREE.CylinderGeometry(.28,.32,1.1,8);const vents=new THREE.InstancedMesh(vg,matDark,80);let k=0;
+   const dm=new THREE.Object3D();
+   for(let row of [-.28,.22]){for(let xx=8;xx<L-6&&k<80;xx+=8+Math.random()*4){const zz=row*SPAN;const y=HW+.35+RISE*(1-Math.pow(2*zz/SPAN,2))+.5;
+     const [a,b]=P(xx,SPAN/2+s*SPAN+zz);dm.position.set(a,y,b);dm.updateMatrix();vents.setMatrixAt(k++,dm.matrix);}}
+   vents.count=k;vents.castShadow=true;roofGroup.add(vents);
+ }
+ // зенитные фонари
+ for(const [xx,zz,ww] of [[52,30,14],[96,12,10],[120,34,8]]){const sk=new THREE.Mesh(new THREE.BoxGeometry(ww,.9,3.2),matSilver);const [a,b]=P(xx,zz);const y=HW+.35+RISE*(1-Math.pow(2*((zz%SPAN)-SPAN/2)/SPAN,2))+.3;sk.position.set(a,y,b);sk.castShadow=true;roofGroup.add(sk);}
+ // парапеты
+ for(const zz of [0,W]){const p=new THREE.Mesh(new THREE.BoxGeometry(L,.6,.4),matWhite);const [a,b]=P(L/2,zz);p.position.set(a,HW+.3,b);roofGroup.add(p);}
+ site.add(roofGroup);
+ // каркас внутри: колонны 6 м × пролёты, пол
+ const colG=new THREE.BoxGeometry(.5,HW,.5);const cols=new THREE.InstancedMesh(colG,M({color:'#9aa0a6'}),200);let c=0;const d=new THREE.Object3D();
+ for(let xx=6;xx<L;xx+=6)for(const zz of [1,SPAN,W-1]){const [a,b]=P(xx,zz);d.position.set(a,HW/2,b);d.updateMatrix();cols.setMatrixAt(c++,d.matrix);}
+ cols.count=c;cols.visible=false;site.add(cols);
+ const beams=new THREE.Group();beams.visible=false;
+ for(let xx=6;xx<L;xx+=6){const bm=new THREE.Mesh(new THREE.BoxGeometry(.35,.9,W),M({color:'#8a9096'}));const [a,b]=P(xx,W/2);bm.position.set(a,HW-.6,b);beams.add(bm);}
+ const floor=new THREE.Mesh(new THREE.PlaneGeometry(L-1,W-1),M({map:T.concrete,color:'#cfcbc1'}));floor.rotation.x=-Math.PI/2;const [fa,fb]=P(L/2,W/2);floor.position.set(fa,.12,fb);floor.receiveShadow=true;floor.visible=false;beams.add(floor);
+ site.add(beams);
+ window.__hall={roofGroup,cols,beams,walls:pickables.find(m=>m.userData.id==='V')};
+ // ворота в торцах
+ for(const [xx,zz] of [[-.05,10],[-.05,36],[L+.05,14]]){const g=new THREE.Mesh(new THREE.BoxGeometry(.2,5,6),matSilver);const [a,b]=P(xx,zz);g.position.set(a,2.5,b);site.add(g);}
+}
+anchor('V',80,24.7,HW+RISE+3);
+
+/* ===== Башни В2 / В4 ===== */
+function tower(id,x0,zBase,outward,baseW,baseD,tw,td){
+  const z0=outward<0?zBase-baseD:zBase;
+  box(id,x0,z0,baseW,baseD,3.45,faceMats(T.sandwich,baseW,3.45,baseD,4,matSilver));
+  const tz=outward<0?zBase-baseD:zBase+baseD-td;
+  const t=box(id,x0+(baseW-tw)/2,tz,tw,td,21.4,faceMats(T.sandwich,tw,21.4,td,4,matSilver));
+  // проёмы наверху
+  for(const yy of [18.2,12.5]){const o=new THREE.Mesh(new THREE.BoxGeometry(1.6,1.8,.3),matDark);const [a,b]=P(x0+baseW/2+2,outward<0?tz-.05:tz+td+.05);o.position.set(a,yy,b);site.add(o);}
+  const cap=new THREE.Mesh(new THREE.ConeGeometry(Math.max(tw,td)*.72,1.6,4),matSilver);const [a,b]=P(x0+baseW/2,tz+td/2);cap.position.set(a,22.2,b);cap.rotation.y=Math.PI/4;cap.scale.set(1,1,td/tw);cap.castShadow=true;site.add(cap);
+  anchor(id,x0+baseW/2,tz+td/2,25);
+}
+tower('V4',40,0,-1,10.3,10.6,10.2,6.7);
+tower('V2',49,W,1,11.7,10.6,11.8,6.7);
+
+/* В3 */
+box('V3',43.5,W,5,3.3,2.8,faceMats(T.brick,5,2.8,3.3,6,M({color:'#7b7f80'})));anchor('V3',46,W+1.6,5);
+
+/* в1–в3 холодные пристройки (северная сторона) */
+box('v',74,-6.3,9.6,6.3,4,faceMats(T.block,9.6,4,6.3,8,matSilver));
+box('v',83.6,-9.6,6.4,9.6,3,faceMats(T.block,6.4,3,9.6,8,matSilver));
+box('v',90,-9.6,15.9,9.6,4.8,faceMats(T.sandwich,15.9,4.8,9.6,4,matSilver));
+anchor('v',90,-6,7.5);
+
+/* В1 склад */
+{const x0=L-36.5,z0=W,w=36.5,d=20.3,h=5.5;box('V1',x0,z0,w,d,h,faceMats(T.sandwich,w,h,d,4,matSilver));
+ const sh=new THREE.Shape();sh.moveTo(-d/2,0);sh.lineTo(d/2,0);sh.lineTo(0,1.4);sh.lineTo(-d/2,0);
+ const r=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:w,bevelEnabled:false}),M({color:'#dfe3e6',roughness:.5,metalness:.2}));
+ r.rotation.y=Math.PI/2;const [a,b]=P(x0,z0+d/2);r.position.set(a,h,b);r.castShadow=true;r.userData.id='V1';pickables.push(r);site.add(r);
+ const gate=new THREE.Mesh(new THREE.BoxGeometry(6,4.5,.2),matSilver);const [ga,gb]=P(x0+12,z0+d+.1);gate.position.set(ga,2.25,gb);site.add(gate);
+ anchor('V1',x0+w/2,z0+d/2,9.5);}
+
+/* ===== А: административный корпус ===== */
+{const x0=L+11.45,z0=-6.4,w=12.85,d=37.9,h=10.8;
+ const bt=()=>T.brick();
+ const mats=[(()=>{const t=bt();t.repeat.set(d/6,1);return M({map:t});})(),(()=>{const t=bt();t.repeat.set(d/6,1);return M({map:t});})(),
+   M({color:'#77797a'}),matFlat,(()=>{const t=bt();t.repeat.set(w/6,1);return M({map:t});})(),(()=>{const t=bt();t.repeat.set(w/6,1);return M({map:t});})()];
+ box('A',x0,z0,w,d,h,mats);
+ const par=new THREE.Mesh(new THREE.BoxGeometry(w+.3,.5,d+.3),M({color:'#cdbf9f'}));const [a,b]=P(x0+w/2,z0+d/2);par.position.set(a,h+.1,b);site.add(par);
+ box(null,x0+4,z0+14,3.4,3.4,2.2,faceMats(T.brick,3.4,2.2,3.4,6,M({color:'#7a5f4a'})),h);
+ for(let i=0;i<5;i++){const v=new THREE.Mesh(new THREE.CylinderGeometry(.35,.35,.8,8),M({color:'#7a4b33'}));const [va,vb]=P(x0+3+i*1.6,z0+6+i*6);v.position.set(va,h+.5,vb);site.add(v);}
+ box('A1',x0+w-6.45,z0-4.5,6.45,4.5,3,faceMats(T.brick,6.45,3,4.5,6,M({color:'#7b7f80'})));
+ box('A2',x0,z0-6.2,3.5,6.2,3,faceMats(T.brick,3.5,3,6.2,6,M({color:'#9aa0a3'})));
+ anchor('A',x0+w/2,z0+d/2,14.5);anchor('A1',x0+w-3.2,z0-2.2,5.5);anchor('A2',x0+1.7,z0-3,5.5);}
+
+/* Б гараж/склад у ж/д тупика */
+box('Bg',-48,22,12.8,42.5,6,faceMats(T.block,12.8,6,42.5,6,M({color:'#6f7375'})));
+for(let i=0;i<4;i++){const g=new THREE.Mesh(new THREE.BoxGeometry(.2,4,4),matSilver);const [a,b]=P(-35.1,27+i*9.5);g.position.set(a,2,b);site.add(g);}
+anchor('Bg',-41.6,43,9);
+
+/* Г1, Г2 */
+box('G',204,6,12.6,4.1,3.8,faceMats(T.sandwich,12.6,3.8,4.1,4,matSilver));
+box('G',208,-19,4.2,3.3,3,faceMats(T.brick,4.2,3,3.3,6,M({color:'#777'})));
+anchor('G',210,8,7);
+
+/* ж/д тупик L=110 м + магистраль за забором */
+function rail(points,id){
+  const curve=new THREE.CatmullRomCurve3(points.map(([x,z])=>{const [a,b]=P(x,z);return new THREE.Vector3(a,0,b);}));
+  const len=curve.getLength();const n=Math.floor(len/0.75);
+  const sleeperG=new THREE.BoxGeometry(2.6,.18,.28);const sl=new THREE.InstancedMesh(sleeperG,M({color:'#4a3f35'}),n);const d=new THREE.Object3D();
+  const railM=M({color:'#6e6a66',metalness:.6,roughness:.4});
+  const ballast=new THREE.Mesh(new THREE.TubeGeometry(curve,Math.ceil(len/2),1.7,4,false),M({color:'#7d7a72'}));ballast.scale.y=.12;ballast.position.y=.02;ballast.receiveShadow=true;site.add(ballast);
+  for(let i=0;i<n;i++){const t=i/n;const p=curve.getPointAt(t),tg=curve.getTangentAt(t);d.position.set(p.x,.25,p.z);d.rotation.set(0,Math.atan2(tg.x,tg.z),0);d.updateMatrix();sl.setMatrixAt(i,d.matrix);}
+  sl.receiveShadow=true;if(id){sl.userData.id=id;pickables.push(sl);}site.add(sl);
+  for(const off of [-.76,.76]){const pts=[];for(let i=0;i<=Math.ceil(len/2);i++){const t=i/Math.ceil(len/2);const p=curve.getPointAt(t),tg=curve.getTangentAt(t);pts.push(new THREE.Vector3(p.x+tg.z*off,.42,p.z-tg.x*off));}
+    const r=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),pts.length*2,.08,4,false),railM);site.add(r);}
+}
+rail([[-53,-34],[-53,10],[-53,46],[-53,76]],'rail');
+rail([[-140,-70],[0,-48],[120,-44],[240,-48],[330,-62]]);
+rail([[-140,-62],[-90,-56],[-60,-40],[-53,-34]]);
+anchor('rail',-53,-8,4);
+
+/* соседние корпуса промзоны (контекст, без детализации) */
+for(const [x,z,w,d,h] of [[-20,-110,140,22,9],[150,-100,80,18,7],[-130,40,40,90,8],[260,-30,30,60,6],[60,130,120,16,7],[240,90,50,24,6],[-140,-160,60,20,8]]){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M({color:'#b9bdbf'}));const [a,b]=P(x+w/2,z+d/2);m.position.set(a,h/2,b);m.castShadow=m.receiveShadow=true;site.add(m);
+  const r=new THREE.Mesh(new THREE.BoxGeometry(w+.4,.3,d+.4),M({color:'#8f979c'}));r.position.set(a,h+.15,b);site.add(r);}
+
+/* деревья (карагач, клён): плотная лесополоса вдоль южного фасада */
+{const rects=[[-.5,-11,L+1,W+22],[L-37,W,37,21],[L+10,-14,16,48],[-49,21,15,45],[200,-20,26,32]];
+ const free=(x,z)=>!rects.some(([x0,z0,w,d])=>x>x0-2&&x<x0+w+2&&z>z0-2&&z<z0+d+2);
+ const pts=[];const add=(x,z)=>{if(free(x,z))pts.push([x,z]);};
+ for(let i=0;i<520;i++)add(-30+Math.random()*150,62+Math.random()*19);
+ for(let i=0;i<120;i++)add(150+Math.random()*60,30+Math.random()*40);
+ for(let i=0;i<70;i++)add(-56+Math.random()*50,-8+Math.random()*30);
+ for(let i=0;i<60;i++)add(170+Math.random()*60,-22+Math.random()*12);
+ for(let i=0;i<50;i++)add(-5+Math.random()*165,-12+Math.random()*1.5);
+ const crown=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,1),M({color:'#5e7a3e',roughness:1,flatShading:true}),pts.length);
+ const trunk=new THREE.InstancedMesh(new THREE.CylinderGeometry(.18,.25,1,5),M({color:'#5b4a3a'}),pts.length);
+ const d=new THREE.Object3D();const col=new THREE.Color();
+ pts.forEach(([x,z],i)=>{const [a,b]=P(x,z);const s=2.2+Math.random()*2.6;const h=2+Math.random()*2.5;
+   d.position.set(a,h+s*.7,b);d.scale.set(s,s*(.8+Math.random()*.4),s);d.rotation.set(Math.random(),Math.random()*6,0);d.updateMatrix();crown.setMatrixAt(i,d.matrix);
+   col.setHSL(.22+Math.random()*.06,.32+Math.random()*.12,.28+Math.random()*.12);crown.setColorAt(i,col);
+   d.position.set(a,h/2+.4,b);d.scale.set(1,h+.8,1);d.rotation.set(0,0,0);d.updateMatrix();trunk.setMatrixAt(i,d.matrix);});
+ crown.castShadow=true;crown.receiveShadow=true;trunk.castShadow=true;site.add(crown,trunk);}
+
+/* опоры ЛЭП вдоль проезда */
+for(let x=-20;x<170;x+=30){const p=new THREE.Mesh(new THREE.CylinderGeometry(.15,.2,9,6),M({color:'#8d8f90'}));const [a,b]=P(x,57);p.position.set(a,4.5,b);p.castShadow=true;site.add(p);}
+
+/* ---------- метки литеров ---------- */
+const labelsEl=document.getElementById('labels');const tags={};
+const ALL=[SITE,...B];
+ALL.forEach(o=>{if(!anchors[o.id])return;const t=document.createElement('div');t.className='tag';t.textContent=o.lit;t.title=o.name;t.addEventListener('click',()=>select(o.id,true));labelsEl.appendChild(t);tags[o.id]=t;});
+const tmpV=new THREE.Vector3();let showLabels=true;
+function placeLabels(){const w=renderer.domElement.clientWidth,h=renderer.domElement.clientHeight;
+  for(const id in tags){const t=tags[id];if(!showLabels){t.hidden=true;continue;}
+    tmpV.copy(anchors[id]).applyMatrix4(site.matrixWorld).project(camera);
+    if(tmpV.z>1||tmpV.x<-1.1||tmpV.x>1.1||tmpV.y<-1.1||tmpV.y>1.1){t.hidden=true;continue;}
+    t.hidden=false;t.style.left=((tmpV.x+1)/2*w)+'px';t.style.top=((1-tmpV.y)/2*h-10)+'px';}}
+
+/* ---------- список и карточка ---------- */
+const list=document.getElementById('list'),card=document.getElementById('card');
+document.getElementById('sum').textContent=B.length+' объектов';
+ALL.forEach(o=>{const b=document.createElement('button');b.id='li-'+o.id;b.innerHTML=`<span class="lit">${o.lit}</span><span>${o.name}</span><span class="num">${(o.rows.find(r=>/Площадь|Протяж/.test(r[0]))||['',''])[1].replace(/ \(.*\)/,'')}</span>`;
+  b.addEventListener('click',()=>select(o.id,true));list.appendChild(b);});
+let current=null;
+const highlight=new THREE.MeshStandardMaterial({color:'#2c56c9',emissive:'#2c56c9',emissiveIntensity:.35,roughness:.6});
+const origMats=new Map();
+function select(id,fly){current=id;const o=ALL.find(x=>x.id===id);
+  list.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.id==='li-'+id?'true':'false'));
+  for(const k in tags)tags[k].classList.toggle('on',k===id);
+  card.innerHTML=`<h3>${o.lit} · ${o.name}</h3><p class="sub">${o.sub}</p><table>${o.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>${o.note?`<p class="note">${o.note}</p>`:''}${id==='site'?`<p class="note">Расположение на карте: <a href="https://maps.app.goo.gl/a4FK4z9joYh5yFU96" target="_blank" rel="noopener">открыть в Google Maps</a>. Размещение строений — по ситуационному плану 2009 г., привязка к сторонам света приблизительная.</p>`:''}`;
+  // подсветка выбранного объекта
+  origMats.forEach((m,mesh)=>{mesh.material=m;});origMats.clear();
+  if(id!=='site')pickables.forEach(m=>{if(m.userData.id===id&&!m.isInstancedMesh){origMats.set(m,m.material);m.material=Array.isArray(m.material)?m.material.map(()=>highlight):highlight;}});
+  if(fly&&anchors[id]){stopTour();const p=anchors[id].clone().applyMatrix4(site.matrixWorld);
+    const dist=id==='site'?330:id==='V'?190:id==='rail'?120:70;
+    const dir=camera.position.clone().sub(controls.target).setY(0).normalize();
+    flyTo(p.clone().add(dir.multiplyScalar(dist)).setY(p.y+dist*.55),p.clone().setY(Math.max(2,p.y-4)));}
+}
+
+/* клик по 3D */
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let downAt=null;
+renderer.domElement.addEventListener('pointerdown',e=>{downAt=[e.clientX,e.clientY];});
+renderer.domElement.addEventListener('pointerup',e=>{if(!downAt||Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1])>5)return;
+  const r=renderer.domElement.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(pickables.filter(m=>m.visible&&(m.parent.visible)),false)[0];if(hit)select(hit.object.userData.id,false);});
+
+/* ---------- камера: облёт и перелёты ---------- */
+let fly=null;
+function flyTo(pos,target,dur=1600){fly={p0:camera.position.clone(),t0:controls.target.clone(),p1:pos,t1:target,start:performance.now(),dur:reduce?1:dur};}
+const tourPts=[[-260,120,260],[-120,70,200],[60,45,150],[180,60,40],[150,90,-160],[-40,70,-210],[-230,90,-90]].map(a=>new THREE.Vector3(...a));
+const tourCurve=new THREE.CatmullRomCurve3(tourPts,true,'catmullrom',.5);
+let touring=!reduce,tourT=0;
+const bTour=document.getElementById('bTour');
+function stopTour(){touring=false;bTour.setAttribute('aria-pressed','false');}
+bTour.addEventListener('click',()=>{touring=!touring;bTour.setAttribute('aria-pressed',String(touring));if(touring){fly=null;}});
+if(!touring)bTour.setAttribute('aria-pressed','false');
+controls.addEventListener('start',()=>{if(touring)stopTour();fly=null;});
+document.getElementById('bTop').addEventListener('click',()=>{stopTour();flyTo(new THREE.Vector3(0,420,1),new THREE.Vector3(0,0,0));});
+const bRoof=document.getElementById('bRoof');
+bRoof.addEventListener('click',()=>{const on=bRoof.getAttribute('aria-pressed')!=='true';bRoof.setAttribute('aria-pressed',String(on));
+  const h=window.__hall;h.roofGroup.visible=!on;h.cols.visible=on;h.beams.visible=on;
+  h.walls.material.forEach((m,i)=>{if(i===2){m.visible=!on;}});
+  bRoof.textContent=on?'Вернуть кровлю':'Снять кровлю цеха';
+  if(on){select('V',true);}});
+const bLabels=document.getElementById('bLabels');
+bLabels.addEventListener('click',()=>{showLabels=!showLabels;bLabels.setAttribute('aria-pressed',String(showLabels));});
+
+camera.position.set(-260,120,260);controls.target.set(0,4,0);
+window.__view=(p,t)=>{stopTour();fly=null;camera.position.set(...p);controls.target.set(...t);};
+if(new URLSearchParams(location.search).has('embed'))document.querySelector('.stamp').hidden=true;
+
+/* ---------- компас ---------- */
+const needle=document.getElementById('needle');const fwd=new THREE.Vector3();
+function updateCompass(){camera.getWorldDirection(fwd);const bearing=Math.atan2(fwd.x,-fwd.z);needle.style.transform=`rotate(${-bearing}rad)`;}
+
+/* ---------- цикл ---------- */
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+addEventListener('resize',resize);resize();
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+let last=performance.now();
+function frame(now){const dt=Math.max(0,Math.min(.05,(now-last)/1000));last=now;
+  if(touring){tourT=(tourT+dt/38)%1;camera.position.copy(tourCurve.getPointAt(tourT));
+    const look=tourCurve.getPointAt((tourT+.02)%1);controls.target.lerp(new THREE.Vector3(look.x*.08,4,look.z*.08),.05);}
+  else if(fly){const k=Math.min(1,(now-fly.start)/fly.dur),e=ease(k);camera.position.lerpVectors(fly.p0,fly.p1,e);controls.target.lerpVectors(fly.t0,fly.t1,e);if(k>=1)fly=null;}
+  controls.update();renderer.render(scene,camera);placeLabels();updateCompass();requestAnimationFrame(frame);}
+select('site',false);
+requestAnimationFrame(frame);
+toast.textContent='Вращайте мышью или пальцем · клик по корпусу — данные техпаспорта';
+setTimeout(()=>toast.hidden=true,5200);
+})();
+</script>
+
+</body></html>
