@@ -61,12 +61,12 @@ section{padding:clamp(64px,9vw,120px) 0}
 @media (max-width:860px){.nav ul{display:none}.nav .btn-sm{margin-left:auto}}
 
 /* hero */
-.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;color:#fff;background:#1a1f23 url(assets/render-hero.jpg) center/cover no-repeat;padding:120px 0 0}
+.hero{position:relative;min-height:88svh;display:flex;align-items:flex-end;color:#fff;background:#1a1f23 url(assets/render-hero.jpg) center/cover no-repeat;padding:96px 0 0}
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,24,27,.55) 0%,rgba(20,24,27,.15) 35%,rgba(20,24,27,.75) 70%,rgba(20,24,27,.97) 100%)}
 .hero .wrap{position:relative;width:100%}
 .badge{display:inline-flex;gap:8px;align-items:center;font:500 12px var(--f-m);letter-spacing:.1em;text-transform:uppercase;background:rgba(232,162,58,.16);border:1px solid rgba(232,162,58,.5);color:#ffd49a;padding:6px 10px}
 .badge b{width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.hero h1{font-size:clamp(25px,6.4vw,72px);overflow-wrap:break-word;hyphens:auto;font-weight:700;margin:18px 0 0;max-width:15ch}
+.hero .h1{font-weight:700;font-size:clamp(25px,6.4vw,72px);overflow-wrap:break-word;hyphens:auto;font-weight:700;margin:18px 0 0;max-width:15ch}
 .hero .sub{font-size:clamp(16px,1.8vw,20px);color:#c9d0d5;max-width:56ch;margin:18px 0 0}
 .price{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:28px 0 0}
 .price strong{font:700 clamp(28px,5vw,60px)/1 var(--f-d);white-space:nowrap;color:var(--accent);letter-spacing:-.02em}
@@ -82,6 +82,20 @@ section{padding:clamp(64px,9vw,120px) 0}
 @media (max-width:700px){.hero::before{background:linear-gradient(180deg,rgba(20,24,27,.8) 0%,rgba(20,24,27,.72) 50%,rgba(20,24,27,.97) 100%)}}
 @media (max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}.kpis div{border-right:0;border-bottom:1px solid rgba(255,255,255,.1);padding-left:0!important}.kpis div:last-child{grid-column:1/-1;border-bottom:0}}
 
+/* first screen: 3D model */
+.first{padding:56px 0 0;background:var(--ink);color:#fff;height:100svh;min-height:560px;display:flex;flex-direction:column;position:relative}
+.first-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;padding:14px var(--g);border-bottom:1px solid var(--line-d)}
+.first-bar .fb-t{flex:1 1 380px;min-width:0}
+.first-bar h1{font-size:clamp(18px,2.1vw,26px);font-weight:600;margin:8px 0 0}
+.first-bar .badge{font-size:11px;padding:4px 8px}
+.fb-p strong{display:block;font:700 clamp(22px,2.6vw,32px)/1 var(--f-d);color:var(--accent);white-space:nowrap}
+.fb-p span{font-size:13px;color:var(--muted-d)}
+.fb-c{display:flex;gap:8px;flex-wrap:wrap}
+.first-model{flex:1;min-height:0;background:#dfe3e6}
+.first-model iframe{width:100%;height:100%;border:0;display:block}
+.scroll-hint{position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font:500 12px var(--f-m);letter-spacing:.06em;background:rgba(20,24,27,.85);color:#fff;padding:8px 12px;text-decoration:none;border:1px solid rgba(255,255,255,.2);white-space:nowrap;z-index:2}
+@media (max-width:1000px){.scroll-hint{display:none}}
+@media (max-width:700px){.first{height:auto;min-height:0}.first-bar{padding:12px 16px}.fb-c{display:none}.first-model{flex:none;height:64svh}}
 /* thesis */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
 @media (max-width:860px){.grid2{grid-template-columns:1fr}}
@@ -189,12 +203,12 @@ footer p{margin:0;max-width:80ch}
 
 <nav class="nav" aria-label="Разделы">
   <div class="wrap">
-    <a class="brand" href="#top"><i></i>Промзона 15А</a>
+    <a class="brand" href="#model"><i></i>Промзона 15А</a>
     <ul>
+      <li><a href="#model">3D-модель</a></li>
       <li><a href="#invest">Инвест-идея</a></li>
       <li><a href="#numbers">Цифры</a></li>
       <li><a href="#calc">Доходность</a></li>
-      <li><a href="#model">3D-модель</a></li>
       <li><a href="#objects">Объекты</a></li>
       <li><a href="#location">Локация</a></li>
     </ul>
@@ -202,15 +216,25 @@ footer p{margin:0;max-width:80ch}
   </div>
 </nav>
 
+<section class="first" id="model" aria-label="3D-модель базы">
+  <div class="first-bar">
+    <div class="fb-t"><span class="badge"><b></b>Продажа · Актобе</span><h1>Производственная база 2,95 га с ж/д тупиком</h1></div>
+    <div class="fb-p"><strong>1,5 млрд ₸</strong><span>12 129 м² зданий · ж/д путь 110 м</span></div>
+    <div class="fb-c"><a class="btn btn-a btn-sm" href="#deal">Запросить показ</a><a class="btn btn-o btn-sm" href="model.html" target="_blank" rel="noopener">На весь экран ↗</a></div>
+  </div>
+  <div class="first-model"><iframe src="model.html?embed=1" title="Интерактивная 3D-модель производственной базы" allowfullscreen></iframe></div>
+  <a class="scroll-hint" href="#top">Инвестиционное предложение ↓</a>
+</section>
+
 <header class="hero" id="top">
   <div class="wrap">
     <span class="badge"><b></b>Продажа · Актобе · Северо-Западная промзона</span>
-    <h1>Производственная база 2,95 га с собственным ж/д тупиком</h1>
+    <h2 class="h1">Производственная база 2,95 га с собственным ж/д тупиком</h2>
     <p class="sub">Готовый индустриальный актив: цех 159 × 49 м высотой 10 м, склады, трёхэтажный административный корпус, гараж и 110 м железнодорожного пути — на одном огороженном участке в собственности.</p>
     <div class="price"><strong>1 500 000 000 ₸</strong><span>≈ <span class="mono">123 700 ₸</span> за м² зданий · торг при осмотре</span></div>
     <div class="cta">
       <a class="btn btn-a" href="#deal">Запросить показ и документы</a>
-      <a class="btn btn-o" href="#model">Смотреть 3D-модель</a>
+      <a class="btn btn-o" href="#model">Вернуться к 3D-модели</a>
     </div>
     <dl class="kpis">
       <div><dt>Участок</dt><dd>2,949<small>га</small></dd></div>
@@ -305,16 +329,10 @@ footer p{margin:0;max-width:80ch}
   </div>
 </section>
 
-<section id="model">
+<section id="gallery">
   <div class="wrap">
-    <p class="eyebrow">Интерактивная 3D-модель</p>
-    <div class="grid2">
-      <h2>Обойдите базу, не выезжая на объект</h2>
-      <p class="lead" style="margin-top:0">Модель построена по техпаспортам и ситуационному плану М 1:1000. Вращайте мышью или пальцем, нажмите на корпус — увидите его размеры, материалы и износ. Кнопка «Снять кровлю цеха» показывает каркас.</p>
-    </div>
-    <div class="model"><iframe src="model.html?embed=1" title="3D-модель производственной базы" loading="lazy" allowfullscreen></iframe></div>
-    <div class="model-bar"><span>Размеры по техпаспортам 2009 г.; привязка к сторонам света приблизительная.</span><a href="model.html" target="_blank" rel="noopener">Открыть на весь экран ↗</a></div>
-    <div class="gal">
+    <p class="eyebrow">Виды объекта</p>
+    <div class="gal" style="margin-top:20px">
       <img src="assets/render-side.jpg" alt="Вид на цех, башни В2 и В4 и склад В1" loading="lazy">
       <div>
         <img src="assets/render-aerial.jpg" alt="Вид сверху на участок и ж/д тупик" loading="lazy">
